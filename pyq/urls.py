@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from .pyqweb.views import CircuitView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^circuit/add/', CircuitView.add_gate),
+    url(r'^circuit/remove/', CircuitView.clean_slots),
+    url(r'^circuit/compute', CircuitView.compute),
+    url(r'^circuit/resize/', CircuitView.resize),
+    url(r'^circuit/setstate/', CircuitView.set_state)
 ]
