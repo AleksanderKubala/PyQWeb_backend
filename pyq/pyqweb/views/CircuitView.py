@@ -14,6 +14,10 @@ from pyq.pyqweb.Responses.ComputeResponse import ComputeResponse
 
 from pyq.pyqweb.Services import circuit_service
 
+@api_view(['GET'])
+def get_circuit(request):
+    pass
+
 @api_view(['POST'])
 def add_gate(request):
     serializer = AddGateRequestSerializer(data=request.data)
@@ -58,7 +62,7 @@ def set_state(request):
     if serializer.is_valid():
         request = serializer.create(serializer.data)
         state = circuit_service.set_register_state(request.state)
-        size = circuit_service.get_register_size()
+        size = circuit_service.get_circuit_size()
         response = RegisterChangeResponse(state, size)
         serializer = RegisterChangeResponseSerializer(instance=response)
         return Response(serializer.data, status=status.HTTP_200_OK)
