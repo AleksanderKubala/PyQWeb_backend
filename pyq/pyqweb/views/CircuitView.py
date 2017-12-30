@@ -1,20 +1,18 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from pyq.pyqweb.Services.CircuitService import CircuitService
 from pyq.pyqweb.Serializers.AddGateRequestSerializer import AddGateRequestSerializer
 from pyq.pyqweb.Serializers.CleanSlotRequestSerializer import CleanSlotRequestSerializer
 from pyq.pyqweb.Serializers.CircuitChangeResponseSerializer import CircuitChangeResponseSerializer
 from pyq.pyqweb.Serializers.ComputeRequestSerializer import ComputeRequestSerializer
 from pyq.pyqweb.Serializers.ComputeResponseSerializer import ComputeResponseSerializer
-from pyq.pyqweb.Serializers.ResizeRequestSerializer import ResizeRequestSerializer
 from pyq.pyqweb.Serializers.RegisterStateRequestSerializer import RegisterStateRequestSerializer
 from pyq.pyqweb.Serializers.RegisterChangeResponseSerializer import RegisterChangeResponseSerializer
 from pyq.pyqweb.Responses.RegisterChangeResponse import RegisterChangeResponse
 from pyq.pyqweb.Responses.CircuitChangeResponse import CircuitChangeResponse
 from pyq.pyqweb.Responses.ComputeResponse import ComputeResponse
 
-circuit_service = CircuitService()
+from pyq.pyqweb.Services import circuit_service
 
 @api_view(['POST'])
 def add_gate(request):
@@ -52,19 +50,7 @@ def compute(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def resize(request):
-    serializer = ResizeRequestSerializer(data=request.data)
-    if serializer.is_valid():
-        request = serializer.create(serializer.data)
-        changes = circuit_service.resize_circuit(request.size)
-        size = circuit_service.get_register_size()
-        state = circuit_service.get_register_state()
-        response = RegisterChangeResponse(state, size, changes)
-        serializer = RegisterChangeResponseSerializer(instance=response)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def set_state(request):

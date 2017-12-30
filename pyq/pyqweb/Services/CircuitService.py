@@ -1,4 +1,5 @@
 from PyQ.Circuit import Circuit
+
 from pyq.pyqweb.Requests.AddGateRequest import AddGateRequest
 from pyq.pyqweb.Requests.CleanSlotRequest import CleanSlotRequest
 
@@ -20,6 +21,7 @@ class CircuitService(object):
 
     def resize_circuit(self, new_size):
         result = self.circuit.resize(new_size)
+        return self._generate_changes_results(result)
 
     def set_register_state(self, state):
         self.circuit.set_register(state)
