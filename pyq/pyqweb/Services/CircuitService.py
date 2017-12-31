@@ -12,7 +12,10 @@ class CircuitService(object):
         size = self.get_circuit_size()
         state = self.get_register_state()
         layer_count = self.circuit.layer_count
-
+        layers = list()
+        for i in range(layer_count):
+            layers.append((i, self.circuit.layers[i].get_gates()))
+        return size, state, layer_count, layers
 
     def add(self, request):
         result = self.circuit.add(request.gate, request.qubits, request.layer, request.controls)

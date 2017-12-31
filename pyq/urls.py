@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from .pyqweb.views import CircuitView
+from .pyqweb.views.CircuitView import CircuitView
 from .pyqweb.views.CircuitSizeView import CircuitSizeView
 from .pyqweb.views.GateView import GateView
+from pyq.pyqweb.views import GeneralView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^circuit/add/', CircuitView.add_gate),
-    url(r'^circuit/remove/', CircuitView.clean_slots),
-    url(r'^circuit/compute', CircuitView.compute),
+    url(r'^circuit/', CircuitView.as_view()),
+    url(r'^circuit/add/', GeneralView.add_gate),
+    url(r'^circuit/remove/', GeneralView.clean_slots),
+    url(r'^circuit/compute', GeneralView.compute),
     url(r'^circuit/size/', CircuitSizeView.as_view()),
-    url(r'^circuit/state/', CircuitView.set_state),
+    url(r'^circuit/state/', GeneralView.set_state),
     url(r'^gates/', GateView.as_view())
 ]
