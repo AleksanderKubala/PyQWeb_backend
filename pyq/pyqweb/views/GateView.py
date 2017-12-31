@@ -1,10 +1,10 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from pyq.pyqweb.Responses.GateSetResponse import GateSetResponse
-from pyq.pyqweb.Serializers.GateSetResponseSerializer import GateSetResponseSerializer
+from rest_framework.views import APIView
 
+from pyq.pyqweb.Responses.GateSetResponse import GateSetResponse
+from pyq.pyqweb.Serializers.Response.GateSetResponseSerializer import GateSetResponseSerializer
 from pyq.pyqweb.Services import gate_service
+
 
 class GateView(APIView):
 

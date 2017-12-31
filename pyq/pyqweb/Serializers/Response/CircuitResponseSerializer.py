@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .CircuitLayerResponseSerializer import CircuitLayerResponseSerializer
+
+from pyq.pyqweb.Serializers.Response.CircuitLayerResponseSerializer import CircuitLayerResponseSerializer
+
 
 class CircuitResponseSerializer(serializers.Serializer):
 

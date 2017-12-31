@@ -1,10 +1,10 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from pyq.pyqweb.Serializers.CircuitResponseSerializer import CircuitResponseSerializer
-from pyq.pyqweb.Responses.CircuitResponse import CircuitResponse
-from pyq.pyqweb.Responses.CircuitLayerResponse import CircuitLayerResponse
-from pyq.pyqweb.Responses.CircuitGateResponse import CircuitGateResponse
+from rest_framework.views import APIView
 
+from pyq.pyqweb.Responses.CircuitGateResponse import CircuitGateResponse
+from pyq.pyqweb.Responses.CircuitLayerResponse import CircuitLayerResponse
+from pyq.pyqweb.Responses.CircuitResponse import CircuitResponse
+from pyq.pyqweb.Serializers.Response.CircuitResponseSerializer import CircuitResponseSerializer
 from pyq.pyqweb.Services import circuit_service
 
 class CircuitView(APIView):

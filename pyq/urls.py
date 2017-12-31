@@ -16,8 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from .pyqweb.views.CircuitView import CircuitView
-from .pyqweb.views.CircuitSizeView import CircuitSizeView
+from .pyqweb.views.RegisterView import RegisterView
 from .pyqweb.views.GateView import GateView
+from .pyqweb.views.ComputeView import ComputeView
 from pyq.pyqweb.views import GeneralView
 
 urlpatterns = [
@@ -25,8 +26,7 @@ urlpatterns = [
     url(r'^circuit/', CircuitView.as_view()),
     url(r'^circuit/add/', GeneralView.add_gate),
     url(r'^circuit/remove/', GeneralView.clean_slots),
-    url(r'^circuit/compute', GeneralView.compute),
-    url(r'^circuit/size/', CircuitSizeView.as_view()),
-    url(r'^circuit/state/', GeneralView.set_state),
+    url(r'^compute/', ComputeView.as_view()),
+    url(r'^register/', RegisterView.as_view()),
     url(r'^gates/', GateView.as_view())
 ]
