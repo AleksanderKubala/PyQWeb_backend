@@ -2,6 +2,10 @@ from PyQ.Circuit import Circuit
 
 from pyq.pyqweb.Requests.AddGateRequest import AddGateRequest
 from pyq.pyqweb.Requests.CleanSlotRequest import CleanSlotRequest
+from pyq.pyqweb.Responses.CircuitGateResponse import CircuitGateResponse
+from pyq.pyqweb.Responses.CircuitLayerResponse import CircuitLayerResponse
+from pyq.pyqweb.Responses.CleanSlotResponse import CleanSlotResponse
+
 
 class CircuitService(object):
 
@@ -15,22 +19,25 @@ class CircuitService(object):
         layers = list()
         for i in range(layer_count):
             layers.append((i, self.circuit.layers[i].get_gates()))
+        layers = self.prepare_layer_response(layers)
         return size, state, layer_count, layers
 
     def add(self, request):
-        result = self.circuit.add(request.gate, request.qubits, request.layer, request.controls)
-        return self._generate_changes_results(result)
+        result = self.circuit.add(request.gate, request.qubits, request.step, request.controls)
+        added = self.prepare_layer_response(result.added)
+        removed = self.prepare_removal_response(result.removed)
+        return added, removed
 
     def remove(self, request):
-        result = self.circuit.remove(request.qubits, request.layer)
-        return self._generate_changes_results(result)
+        result = self.circuit.remove(request.qubits, request.step)
+        removed = self.prepare_removal_response(result.removed)
+        return removed
 
     def compute(self, request):
         return self.circuit.compute(request.time)
 
     def set_circuit_size(self, new_size):
-        result = self.circuit.resize(new_size)
-        return self._generate_changes_results(result)
+        return self.circuit.resize(new_size)
 
     def set_register_state(self, state):
         self.circuit.set_register(state)
@@ -45,14 +52,20 @@ class CircuitService(object):
     def get_register_state(self):
         return self.circuit.current_state
 
-    def _generate_changes_results(self, result):
-        for i in range(len(result.added)):
-            addition = (result.added[i])
-            result.added[i] = AddGateRequest(addition[1].basegate, addition[1].qubits, addition[0], addition[1].controls)
-        for i in range(len(result.removed)):
-            removal = (result.removed[i])
-            result.removed[i] = CleanSlotRequest(removal[0], removal[1])
-        return result
+    def prepare_layer_response(self, circuit_layers):
+        layers = list()
+        gates = list()
+        for circuit_layer in circuit_layers:
+            for circuit_gate in circuit_layer[1]:
+                gates.append(CircuitGateResponse(circuit_gate.qubits, circuit_gate.basegate, circuit_gate.controls))
+            layers.append(CircuitLayerResponse(circuit_layer[0], gates))
+            gates = list()
+        return layers
 
-    def _generate_compute_results(self, results):
-        pass
+    def prepare_removal_response(self, circuit_layers):
+        removed = list()
+        for circuit_layer in circuit_layers:
+            removed.append(CleanSlotResponse(circuit_layer[0], circuit_layer[1]))
+        return removed
+
+

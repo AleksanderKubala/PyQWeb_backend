@@ -1,4 +1,4 @@
 class GateSetResponse(object):
 
-    def __init__(self, signatures):
-        self.signatures = signatures
+    def __init__(self, gates):
+        self.gates = gates

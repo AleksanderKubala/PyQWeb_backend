@@ -19,13 +19,12 @@ from .pyqweb.views.CircuitView import CircuitView
 from .pyqweb.views.RegisterView import RegisterView
 from .pyqweb.views.GateView import GateView
 from .pyqweb.views.ComputeView import ComputeView
-from pyq.pyqweb.views import GeneralView
+from pyq.pyqweb.views.CircuitChangeView import CircuitChangeView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^circuit/', CircuitView.as_view()),
-    url(r'^circuit/add/', GeneralView.add_gate),
-    url(r'^circuit/remove/', GeneralView.clean_slots),
+    url(r'^change/', CircuitChangeView.as_view()),
     url(r'^compute/', ComputeView.as_view()),
     url(r'^register/', RegisterView.as_view()),
     url(r'^gates/', GateView.as_view())

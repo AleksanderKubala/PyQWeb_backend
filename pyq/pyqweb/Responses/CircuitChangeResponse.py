@@ -1,6 +1,6 @@
 
 class CircuitChangeResponse(object):
 
-    def __init__(self, changes=None):
-        self.added = changes.added if changes is not None else []
-        self.removed = changes.removed if changes is not None else []
+    def __init__(self, added = None, removed = None):
+        self.added = added if added is not None else []
+        self.removed = removed if removed is not None else []

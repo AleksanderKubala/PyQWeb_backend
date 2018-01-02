@@ -10,14 +10,7 @@ from pyq.pyqweb.Services import circuit_service
 class CircuitView(APIView):
 
     def get(self, request):
-        size, state, layer_count, circuit_layers = circuit_service.get_circuit()
-        layers = list()
-        gates = list()
-        for circuit_layer in circuit_layers:
-            for circuit_gate in circuit_layer[1]:
-                gates.append(CircuitGateResponse(circuit_gate.qubits, circuit_gate.basegate, circuit_gate.controls))
-            layers.append(CircuitLayerResponse(circuit_layer[0], gates))
-            gates = list()
+        size, state, layer_count, layers = circuit_service.get_circuit()
         response = CircuitResponse(size, state, layer_count, layers)
         serializer = CircuitResponseSerializer(instance=response)
         return Response(serializer.data)

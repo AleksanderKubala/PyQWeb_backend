@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from pyq.pyqweb.Serializers.Request.AddGateRequestSerializer import AddGateRequestSerializer
-from pyq.pyqweb.Serializers.Request.CleanSlotRequestSerializer import CleanSlotRequestSerializer
+from pyq.pyqweb.Serializers.Response.CircuitLayerResponseSerializer import CircuitLayerResponseSerializer
+from pyq.pyqweb.Serializers.Response.CleanSlotResponseSerializer import CleanSlotResponseSerializer
 
 
 class CircuitChangeResponseSerializer(serializers.Serializer):
-    added = AddGateRequestSerializer(many=True)
-    removed = CleanSlotRequestSerializer(many=True)
+    added = CircuitLayerResponseSerializer(many=True)
+    removed = CleanSlotResponseSerializer(many=True)
 
