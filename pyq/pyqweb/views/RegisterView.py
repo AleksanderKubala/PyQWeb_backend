@@ -13,7 +13,7 @@ class RegisterView(APIView):
 
     def get(self, request):
         changes = None
-        size = circuit_service.get_circuit_size()
+        size = circuit_service.get_register_size()
         state = circuit_service.get_register_state()
         response = RegisterResponse(state, size, changes)
         serializer = RegisterResponseSerializer(instance=response)
@@ -23,10 +23,10 @@ class RegisterView(APIView):
         serializer = RegisterRequestSerializer(data=request.data)
         if serializer.is_valid():
             request = serializer.create(serializer.data)
-            changes = circuit_service.set_circuit_size(request.size)
-            size = circuit_service.get_circuit_size()
-            state = circuit_service.set_register_state(request.state)
-            response = RegisterResponse(state, size, changes)
+            removed = circuit_service.set_register(request)
+            size = circuit_service.get_register_size()
+            state = circuit_service.get_register_state()
+            response = RegisterResponse(state, size, removed)
             serializer = RegisterResponseSerializer(instance=response)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:

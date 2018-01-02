@@ -13,7 +13,7 @@ class CircuitService(object):
         self.circuit = Circuit()
 
     def get_circuit(self):
-        size = self.get_circuit_size()
+        size = self.get_register_size()
         state = self.get_register_state()
         layer_count = self.circuit.layer_count
         layers = list()
@@ -36,17 +36,15 @@ class CircuitService(object):
     def compute(self, request):
         return self.circuit.compute(request.time)
 
-    def set_circuit_size(self, new_size):
-        return self.circuit.resize(new_size)
-
-    def set_register_state(self, state):
-        self.circuit.set_register(state)
-        return self.get_register_state()
+    def set_register(self, request):
+        self.circuit.set_register(request.state)
+        result = self.circuit.resize(request.size)
+        return self.prepare_removal_response(result.removed)
 
     def get_results(self):
         return self.circuit.get_results()
 
-    def get_circuit_size(self):
+    def get_register_size(self):
         return self.circuit.size
 
     def get_register_state(self):
