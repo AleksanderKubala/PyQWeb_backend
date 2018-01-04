@@ -1,7 +1,5 @@
 from PyQ.Circuit import Circuit
 
-from pyq.pyqweb.Requests.AddGateRequest import AddGateRequest
-from pyq.pyqweb.Requests.CleanSlotRequest import CleanSlotRequest
 from pyq.pyqweb.Responses.CircuitGateResponse import CircuitGateResponse
 from pyq.pyqweb.Responses.CircuitLayerResponse import CircuitLayerResponse
 from pyq.pyqweb.Responses.CleanSlotResponse import CleanSlotResponse
@@ -21,6 +19,18 @@ class CircuitService(object):
             layers.append((i, self.circuit.layers[i].get_gates()))
         layers = self.prepare_layer_response(layers)
         return size, state, layer_count, layers
+
+    def createCircuit(self, request):
+        self.circuit = Circuit(request.size, request.layerCount)
+        for layer in request.layers:
+            for gate in layer['gates']:
+                self.circuit.add(gate['gate'], gate['qubits'], layer['step'], gate['controls'])
+        self.circuit.set_register(request.state)
+        return self.get_circuit()
+
+    def reset(self):
+        self.circuit = Circuit()
+        return self.get_circuit()
 
     def add(self, request):
         result = self.circuit.add(request.gate, request.qubits, request.step, request.controls)

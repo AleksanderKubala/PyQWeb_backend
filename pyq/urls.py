@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^change/', CircuitChangeView.as_view()),
     url(r'^compute/', ComputeView.as_view()),
     url(r'^register/', RegisterView.as_view()),
-    url(r'^gates/', GateView.as_view())
+    url(r'^gates/', GateView.as_view()),
 ]
